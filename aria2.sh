@@ -6,7 +6,7 @@
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
 #
-# https://github.com/P3TERX/aria2.sh
+# https://github.com/miscdec/aria2.sh
 # Description: Aria2 One-click installation management script
 # System Required: CentOS/Debian/Ubuntu
 # Version: 2.7.4
@@ -14,8 +14,8 @@
 
 sh_ver="2.7.4"
 export PATH=~/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/sbin:/bin
-aria2_conf_dir="/root/.aria2c"
-download_path="/root/downloads"
+aria2_conf_dir="/home/lighthouse/.aria2c"
+download_path="/home/lighthouse/downloads"
 aria2_conf="${aria2_conf_dir}/aria2.conf"
 aria2_log="${aria2_conf_dir}/aria2.log"
 aria2c="/usr/local/bin/aria2c"
@@ -119,7 +119,7 @@ Download_aria2() {
     DOWNLOAD_URL="https://github.com/P3TERX/Aria2-Pro-Core/releases/download/${aria2_new_ver}/aria2-${aria2_new_ver%_*}-static-linux-${ARCH}.tar.gz"
     {
         wget -t2 -T3 -O- "${DOWNLOAD_URL}" ||
-            wget -t2 -T3 -O- "https://gh-acc.p3terx.com/${DOWNLOAD_URL}"
+            wget -t2 -T3 -O- "https://ghproxy.com/${DOWNLOAD_URL}"
     } | tar -zx
     [[ ! -s "aria2c" ]] && echo -e "${Error} Aria2 下载失败 !" && exit 1
     [[ ${update_dl} = "update" ]] && rm -f "${aria2c}"
@@ -129,9 +129,9 @@ Download_aria2() {
     echo -e "${Info} Aria2 主程序安装完成！"
 }
 Download_aria2_conf() {
-    PROFILE_URL1="https://p3terx.github.io/aria2.conf"
-    PROFILE_URL2="https://aria2c.now.sh"
-    PROFILE_URL3="https://cdn.jsdelivr.net/gh/P3TERX/aria2.conf@master"
+    PROFILE_URL1="https://raw.githubusercontent.com/miscdec/aria2.conf/master/aria2.conf"
+    PROFILE_URL2="https://ghproxy.com/https://raw.githubusercontent.com/miscdec/aria2.conf/master/aria2.conf"
+    # PROFILE_URL3="https://cdn.jsdelivr.net/gh/P3TERX/aria2.conf@master"
     PROFILE_LIST="
 aria2.conf
 clean.sh
@@ -149,8 +149,9 @@ LICENSE
     for PROFILE in ${PROFILE_LIST}; do
         [[ ! -f ${PROFILE} ]] && rm -rf ${PROFILE}
         wget -N -t2 -T3 ${PROFILE_URL1}/${PROFILE} ||
-            wget -N -t2 -T3 ${PROFILE_URL2}/${PROFILE} ||
-            wget -N -t2 -T3 ${PROFILE_URL3}/${PROFILE}
+            wget -N -t2 -T3 ${PROFILE_URL2}/${PROFILE} 
+            # ||
+            # wget -N -t2 -T3 ${PROFILE_URL3}/${PROFILE}
         [[ ! -s ${PROFILE} ]] && {
             echo -e "${Error} '${PROFILE}' 下载失败！清理残留文件..."
             rm -vrf "${aria2_conf_dir}"
@@ -158,7 +159,7 @@ LICENSE
         }
     done
     sed -i "s@^\(dir=\).*@\1${download_path}@" ${aria2_conf}
-    sed -i "s@/root/.aria2/@${aria2_conf_dir}/@" ${aria2_conf_dir}/*.conf
+    sed -i "s@/home/lighthouse/.aria2/@${aria2_conf_dir}/@" ${aria2_conf_dir}/*.conf
     sed -i "s@^\(rpc-secret=\).*@\1$(date +%s%N | md5sum | head -c 20)@" ${aria2_conf}
     sed -i "s@^#\(retry-on-.*=\).*@\1true@" ${aria2_conf}
     sed -i "s@^\(max-connection-per-server=\).*@\132@" ${aria2_conf}
@@ -168,9 +169,9 @@ LICENSE
 }
 Service_aria2() {
     if [[ ${release} = "centos" ]]; then
-        wget -N -t2 -T3 "https://raw.githubusercontent.com/P3TERX/aria2.sh/master/service/aria2_centos" -O /etc/init.d/aria2 ||
-            wget -N -t2 -T3 "https://cdn.jsdelivr.net/gh/P3TERX/aria2.sh@master/service/aria2_centos" -O /etc/init.d/aria2 ||
-            wget -N -t2 -T3 "https://gh-raw.p3terx.com/P3TERX/aria2.sh/master/service/aria2_centos" -O /etc/init.d/aria2
+        wget -N -t2 -T3 "https://raw.githubusercontent.com/miscdec/aria2.sh/master/service/aria2_centos" -O /etc/init.d/aria2 ||
+            wget -N -t2 -T3 "https://cdn.jsdelivr.net/gh/miscdec/aria2.sh@master/service/aria2_centos" -O /etc/init.d/aria2 ||
+            wget -N -t2 -T3 "https://ghproxy.com/https://raw.githubusercontent.com/miscdec/aria2.sh/master/service/aria2_centos" -O /etc/init.d/aria2
         [[ ! -s /etc/init.d/aria2 ]] && {
             echo -e "${Error} Aria2服务 管理脚本下载失败 !"
             exit 1
@@ -179,9 +180,9 @@ Service_aria2() {
         chkconfig --add aria2
         chkconfig aria2 on
     else
-        wget -N -t2 -T3 "https://raw.githubusercontent.com/P3TERX/aria2.sh/master/service/aria2_debian" -O /etc/init.d/aria2 ||
-            wget -N -t2 -T3 "https://cdn.jsdelivr.net/gh/P3TERX/aria2.sh@master/service/aria2_debian" -O /etc/init.d/aria2 ||
-            wget -N -t2 -T3 "https://gh-raw.p3terx.com/P3TERX/aria2.sh/master/service/aria2_debian" -O /etc/init.d/aria2
+        wget -N -t2 -T3 "https://raw.githubusercontent.com/miscdec/aria2.sh/master/service/aria2_debian" -O /etc/init.d/aria2 ||
+            wget -N -t2 -T3 "https://cdn.jsdelivr.net/gh/miscdec/aria2.sh@master/service/aria2_debian" -O /etc/init.d/aria2 ||
+            wget -N -t2 -T3 "https://ghproxy.com/https://raw.githubusercontent.com/miscdec/aria2.sh/master/service/aria2_debian" -O /etc/init.d/aria2
         [[ ! -s /etc/init.d/aria2 ]] && {
             echo -e "${Error} Aria2服务 管理脚本下载失败 !"
             exit 1
@@ -657,7 +658,7 @@ Set_iptables() {
     fi
 }
 Update_Shell() {
-    sh_new_ver=$(wget -qO- -t1 -T3 "https://raw.githubusercontent.com/P3TERX/aria2.sh/master/aria2.sh" | grep 'sh_ver="' | awk -F "=" '{print $NF}' | sed 's/\"//g' | head -1) && sh_new_type="github"
+    sh_new_ver=$(wget -qO- -t1 -T3 "https://raw.githubusercontent.com/miscdec/aria2.sh/master/aria2.sh" | grep 'sh_ver="' | awk -F "=" '{print $NF}' | sed 's/\"//g' | head -1) && sh_new_type="github"
     [[ -z ${sh_new_ver} ]] && echo -e "${Error} 无法链接到 Github !" && exit 0
     if [[ -e "/etc/init.d/aria2" ]]; then
         rm -rf /etc/init.d/aria2
@@ -667,7 +668,7 @@ Update_Shell() {
     if [[ -n $(crontab_update_status) ]]; then
         crontab_update_stop
     fi
-    wget -N "https://raw.githubusercontent.com/P3TERX/aria2.sh/master/aria2.sh" && chmod +x aria2.sh
+    wget -N "https://raw.githubusercontent.com/miscdec/aria2.sh/master/aria2.sh" && chmod +x aria2.sh
     echo -e "脚本已更新为最新版本[ ${sh_new_ver} ] !(注意：因为更新方式为直接覆盖当前运行的脚本，所以可能下面会提示一些报错，无视即可)" && exit 0
 }
 

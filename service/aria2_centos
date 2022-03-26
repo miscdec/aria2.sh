@@ -14,7 +14,7 @@
 export PATH=~/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/sbin:/bin
 NAME="Aria2"
 NAME_BIN="aria2c"
-CONFIG_DIR="/root/.aria2c"
+CONFIG_DIR="/home/lighthouse/.aria2c"
 CONFIG="${CONFIG_DIR}/aria2.conf"
 LOG="${CONFIG_DIR}/aria2.log"
 
