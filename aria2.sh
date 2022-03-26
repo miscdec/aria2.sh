@@ -129,8 +129,8 @@ Download_aria2() {
     echo -e "${Info} Aria2 主程序安装完成！"
 }
 Download_aria2_conf() {
-    PROFILE_URL1="https://raw.githubusercontent.com/miscdec/aria2.conf/master"
-    PROFILE_URL2="https://ghproxy.com/https://raw.githubusercontent.com/miscdec/aria2.conf/master"
+    PROFILE_URL1="https://ghproxy.com/https://raw.githubusercontent.com/miscdec/aria2.conf/master"
+    PROFILE_URL2="https://raw.githubusercontent.com/miscdec/aria2.conf/master"
     # PROFILE_URL3="https://cdn.jsdelivr.net/gh/P3TERX/aria2.conf@master"
     PROFILE_LIST="
 aria2.conf
