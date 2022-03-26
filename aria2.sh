@@ -130,8 +130,8 @@ Download_aria2() {
 }
 Download_aria2_conf() {
     PROFILE_URL1="https://ghproxy.com/https://raw.githubusercontent.com/miscdec/aria2.conf/master"
-    PROFILE_URL2="https://raw.githubusercontent.com/miscdec/aria2.conf/master"
-    # PROFILE_URL3="https://cdn.jsdelivr.net/gh/P3TERX/aria2.conf@master"
+    PROFILE_URL2="https://gh.api.99988866.xyz/https://raw.githubusercontent.com/miscdec/aria2.conf/master"
+    PROFILE_URL3="https://cdn.staticaly.com/gh/miscdec/aria2.sh/master"
     PROFILE_LIST="
 aria2.conf
 clean.sh
@@ -149,9 +149,8 @@ LICENSE
     for PROFILE in ${PROFILE_LIST}; do
         [[ ! -f ${PROFILE} ]] && rm -rf ${PROFILE}
         wget -N -t2 -T3 ${PROFILE_URL1}/${PROFILE} ||
-            wget -N -t2 -T3 ${PROFILE_URL2}/${PROFILE} 
-            # ||
-            # wget -N -t2 -T3 ${PROFILE_URL3}/${PROFILE}
+            wget -N -t2 -T3 ${PROFILE_URL2}/${PROFILE} ||
+            wget -N -t2 -T3 ${PROFILE_URL3}/${PROFILE}
         [[ ! -s ${PROFILE} ]] && {
             echo -e "${Error} '${PROFILE}' 下载失败！清理残留文件..."
             rm -vrf "${aria2_conf_dir}"
